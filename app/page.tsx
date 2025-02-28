@@ -4,8 +4,8 @@ import Sidebar from "@/components/sidebar";
 import Map from "@/components/map"
 import { useState } from "react";
 import { Call } from '@/components/sidebar'; 
-import EmergencyDetails from "@/components/emergencyDetailsPopup";
 import LiveTranscript from "@/components/livetranscript";
+import ScamVoiceDetails from "@/components/ScamVoiceDetailsPopup";
 
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         <Map selectedCall={selectedCall} />
         {selectedCall && (
           <div className="absolute top-0 right-0 bottom-0 flex">
-            <EmergencyDetails
+            <ScamVoiceDetails
               call={selectedCall}
               onClose={() => setSelectedCall(null)}
             />

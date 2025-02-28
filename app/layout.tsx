@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FastyCall",
-  description: "Make every second count with FastyCall",
+  title: "ScamCall",
+  description: "AI agent for scam detection",
 };
 
 export default function RootLayout({
