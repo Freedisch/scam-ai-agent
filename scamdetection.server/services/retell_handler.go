@@ -90,6 +90,7 @@ func Retellwhandler(c *gin.Context){
 	}
 	client := openai.NewClient(utils.GetOpenAISecretKey())
 	emergencyCall, err := AnalyzeVoiceCall(msg, client)
+	
 	if err != nil {
 		log.Printf("Error analyzing emergency call: %v", err)
 	} else {
