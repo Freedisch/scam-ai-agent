@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -13,92 +14,116 @@ import (
 )
 
 type RegisterCallRequest struct {
-	AgentID string `json:"agent_id"`
-	AudioEncoding string `json:"audio_encoding"`
-	AudioWebsocketProtocol string `json:"audio_websocket_protocol"`
-	SampleRate int `json:"sample_rate"`
-
+	AgentID                    string                 `json:"agent_id"`
+	FromNumber                 string                 `json:"from_number,omitempty"`
+	ToNumber                   string                 `json:"to_number,omitempty"`
+	Direction                  string                 `json:"direction,omitempty"`
+	Metadata                   map[string]interface{} `json:"metadata,omitempty"`
+	RetellLlmDynamicVariables  map[string]string      `json:"retell_llm_dynamic_variables,omitempty"`
 }
 
 type RegisterCallResponse struct {
-	AgenID string `json:"agent_id"`
-	AudioEncoding string `json:"audio_encoding"`
-	AudioWebsocketProtocol string `json:"audio_websocket_protocol"`
-	CallID string `json:"call_id"`
-	SampleRate int `json:"sample_rate"`
-	StartTimestamp int `json:"start_times"`
+	CallType                   string                 `json:"call_type"`
+	FromNumber                 string                 `json:"from_number"`
+	ToNumber                   string                 `json:"to_number"`
+	Direction                  string                 `json:"direction"`
+	CallID                     string                 `json:"call_id"`
+	AgentID                    string                 `json:"agent_id"`
+	CallStatus                 string                 `json:"call_status"`
+	Metadata                   map[string]interface{} `json:"metadata"`
+	RetellLlmDynamicVariables  map[string]string      `json:"retell_llm_dynamic_variables"`
+	OptOutSensitiveDataStorage bool                   `json:"opt_out_sensitive_data_storage"`
+	StartTimestamp             int64                  `json:"start_timestamp,omitempty"`
+	EndTimestamp               int64                  `json:"end_timestamp,omitempty"`
+	Transcript                 string                 `json:"transcript,omitempty"`
+	RecordingURL               string                 `json:"recording_url,omitempty"`
+	PublicLogURL               string                 `json:"public_log_url,omitempty"`
+	DisconnectionReason        string                 `json:"disconnection_reason,omitempty"`
 }
 
 func Twiliowebhookhandler(c *gin.Context) {
-	agent_id := c.Param("agent_id")
+	agentID := c.Param("agent_id")
 
-	callinfo, err := RegisterRetellCall(agent_id)
+	fromNumber := c.Query("from_number")
+	toNumber := c.Query("to_number")
+
+	callInfo, err := RegisterRetellCall(agentID, fromNumber, toNumber)
 	if err != nil {
+		log.Printf("Failed to register call: %v\n", err)
 		c.JSON(http.StatusInternalServerError, "cannot handle call atm")
-	}
-	log.Println(callinfo)
-
-	twilioresponse := &twiml.VoiceStream{
-		Url: "wss://api.retellai.com/audio-websocket/" + callinfo.CallID,
-	}
-	log.Println(twilioresponse)
-
-	twiliostart := &twiml.VoiceConnect{
-		InnerElements: []twiml.Element{twilioresponse},
-	}
-
-	twimlResult, err := twiml.Voice([]twiml.Element{twiliostart})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "failed conection with twilio connect")
 		return
 	}
-	log.Println(twimlResult)
+	log.Printf("Call info: %+v\n", callInfo)
+
+	twilioResponse := &twiml.VoiceStream{
+		Url: "wss://api.retellai.com/audio-websocket/" + callInfo.CallID,
+	}
+	log.Printf("Twilio response: %+v\n", twilioResponse)
+
+	twilioStart := &twiml.VoiceConnect{
+		InnerElements: []twiml.Element{twilioResponse},
+	}
+
+	twimlResult, err := twiml.Voice([]twiml.Element{twilioStart})
+	if err != nil {
+		log.Printf("Failed to generate TwiML: %v\n", err)
+		c.JSON(http.StatusInternalServerError, "failed connection with Twilio connect")
+		return
+	}
+	log.Printf("TwiML result: %s\n", twimlResult)
 
 	c.Header("Content-Type", "text/xml")
 	c.String(http.StatusOK, twimlResult)
 }
 
-func RegisterRetellCall(agent_id string) (RegisterCallResponse, error) {
+func RegisterRetellCall(agentID, fromNumber, toNumber string) (RegisterCallResponse, error) {
 	request := RegisterCallRequest{
-		AgentID: agent_id,
-		AudioEncoding: "mulaw",
-		SampleRate: 8000,
-		AudioWebsocketProtocol: "twilio",
+		AgentID:    agentID,
+		FromNumber: fromNumber,
+		ToNumber:   toNumber,
+		Direction:  "inbound", // or "outbound" depending on your use case
 	}
 
-	request_bytes, err := json.Marshal(request)
+	requestBytes, err := json.Marshal(request)
 	if err != nil {
-		return RegisterCallResponse{}, err
+		return RegisterCallResponse{}, fmt.Errorf("failed to marshal request: %v", err)
 	}
 
-	payload := bytes.NewBuffer(request_bytes)
-	request_url := "https://api.retellai.com/v2/register-phone-call"
+	payload := bytes.NewBuffer(requestBytes)
+	requestURL := "https://api.retellai.com/v2/register-phone-call"
 	method := "POST"
 
-	var bearer = "Bearer " + utils.GetRetellAISecretKey()
+	bearer := "Bearer " + utils.GetRetellAISecretKey()
 	client := &http.Client{}
-	req, err := http.NewRequest(method, request_url, payload)
+	req, err := http.NewRequest(method, requestURL, payload)
 	if err != nil {
-		return RegisterCallResponse{}, err
+		return RegisterCallResponse{}, fmt.Errorf("failed to create request: %v", err)
 	}
-	log.Println(req)
+	log.Printf("Request: %+v\n", req)
 
 	req.Header.Add("Authorization", bearer)
 	req.Header.Add("Content-Type", "application/json")
 	res, err := client.Do(req)
 	if err != nil {
-		return RegisterCallResponse{}, err
+		return RegisterCallResponse{}, fmt.Errorf("failed to send request: %v", err)
 	}
-	log.Println("Response %v", res)
-
 	defer res.Body.Close()
+
+	log.Printf("Response status: %s\n", res.Status)
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return RegisterCallResponse{}, err
+		return RegisterCallResponse{}, fmt.Errorf("failed to read response body: %v", err)
+	}
+	log.Printf("Response body: %s\n", body)
+
+	if res.StatusCode != http.StatusCreated { // Expecting 201 for success
+		return RegisterCallResponse{}, fmt.Errorf("API request failed with status %d: %s", res.StatusCode, body)
 	}
 
-	log.Println("body %v", body)
 	var response RegisterCallResponse
-	json.Unmarshal(body, &response)
+	if err := json.Unmarshal(body, &response); err != nil {
+		return RegisterCallResponse{}, fmt.Errorf("failed to unmarshal response: %v", err)
+	}
+
 	return response, nil
 }
