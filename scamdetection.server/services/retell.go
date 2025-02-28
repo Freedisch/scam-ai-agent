@@ -72,7 +72,7 @@ func RegisterRetellCall(agent_id string) (RegisterCallResponse, error) {
 	}
 
 	payload := bytes.NewBuffer(request_bytes)
-	request_url := "https://api.retellai.com/register-call"
+	request_url := "https://api.retellai.com/v2/register-phone-call"
 	method := "POST"
 
 	var bearer = "Bearer " + utils.GetRetellAISecretKey()
