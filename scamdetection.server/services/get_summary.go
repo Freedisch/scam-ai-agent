@@ -45,23 +45,23 @@ func AnalyzeVoiceCall(msg Request, client *openai.Client) (*VoiceCall, error) {
 	}
 
 	// Generate analysis using GPT
-	analysisPrompt := `Analyze this Voice call transcript and provide a JSON response with the following:
-	1. A short summary (max 10 words)
-	2. A detailed summary (2-3 sentences)
-	3. Fear level (0-100)
-	4. Stress level (0-100)
+	analysisPrompt := `Analyze this voice call transcript and provide a JSON response with the following:
+	1. A short summary (max 10 words) highlighting the potential scam type.
+	2. A detailed summary (2-3 sentences) describing the scam attempt, including key red flags and behaviors.
+	3. Fear level (0-100) based on the caller's perceived fear or urgency.
+	4. Stress level (0-100) based on the caller's stress or anxiety.
 	5. Location Details: Latitude and longitude (lat/lng) based on the identified location type:
-		If the location is a University, set:
-		"lat": -1.9303844748850307, "lng": 30.15291759691398.
-		If the location is a Market, set:
-		"lat": -1.949377894156091, "lng": 30.126107587392756.
-		For all other locations, set:
-		"lat": -1.9344642081495684, "lng": 30.14847027961296.
-	6. Appropriate icon (one of: Car, Medical, Fire, Police)
-
+		- If the location is a University, set:
+			"lat": -1.9303844748850307, "lng": 30.15291759691398.
+		- If the location is a Market, set:
+			"lat": -1.949377894156091, "lng": 30.126107587392756.
+		- For all other locations, set:
+			"lat": -1.9344642081495684, "lng": 30.14847027961296.
+	6. Appropriate icon (one of: Car, Medical, Fire, Police, Scam) to represent the scam type.
+	
 	Conversation transcript:
 	` + conversation + `
-
+	
 	Provide the response in this JSON format:
 	{
 		"shortSummary": "",
@@ -74,7 +74,7 @@ func AnalyzeVoiceCall(msg Request, client *openai.Client) (*VoiceCall, error) {
 			"lng": null
 		}
 	}`
-
+	
 	response, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -82,7 +82,7 @@ func AnalyzeVoiceCall(msg Request, client *openai.Client) (*VoiceCall, error) {
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    "system",
-					Content: "You are a system analyzing Voice calls to extract key information.",
+					Content: "You are a system analyzing voice calls to detect scams. Identify scam patterns, red flags, and caller emotions.",
 				},
 				{
 					Role:    "user",
