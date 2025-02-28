@@ -81,6 +81,7 @@ func RegisterRetellCall(agent_id string) (RegisterCallResponse, error) {
 	if err != nil {
 		return RegisterCallResponse{}, err
 	}
+	log.Println(req)
 
 	req.Header.Add("Authorization", bearer)
 	req.Header.Add("Content-Type", "application/json")
@@ -88,6 +89,7 @@ func RegisterRetellCall(agent_id string) (RegisterCallResponse, error) {
 	if err != nil {
 		return RegisterCallResponse{}, err
 	}
+	log.Println("Response %v", res)
 
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
@@ -95,6 +97,7 @@ func RegisterRetellCall(agent_id string) (RegisterCallResponse, error) {
 		return RegisterCallResponse{}, err
 	}
 
+	log.Println("body %v", body)
 	var response RegisterCallResponse
 	json.Unmarshal(body, &response)
 	return response, nil
