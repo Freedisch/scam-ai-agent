@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -35,12 +36,12 @@ func Twiliowebhookhandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "cannot handle call atm")
 	}
-	println(callinfo)
+	log.Println(callinfo)
 
 	twilioresponse := &twiml.VoiceStream{
 		Url: "wss://api.retellai.com/audio-websocket/" + callinfo.CallID,
 	}
-	println(twilioresponse)
+	log.Println(twilioresponse)
 
 	twiliostart := &twiml.VoiceConnect{
 		InnerElements: []twiml.Element{twilioresponse},
@@ -51,7 +52,7 @@ func Twiliowebhookhandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "failed conection with twilio connect")
 		return
 	}
-	print(twimlResult)
+	log.Println(twimlResult)
 
 	c.Header("Content-Type", "text/xml")
 	c.String(http.StatusOK, twimlResult)
