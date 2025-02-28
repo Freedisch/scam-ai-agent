@@ -5,12 +5,12 @@ import { format } from 'date-fns';
 import { getLocationName, getStaticMapImage } from '@/app/lib/locationutils';
 import { getThreatBadgeColor, getThreatLevel } from '@/app/lib/maputils';
 
-interface EmergencyDetailsProps {
+interface ScamVoiceDetailsProps {
   call: Call;
   onClose: () => void;
 }
 
-const EmergencyDetails: React.FC<EmergencyDetailsProps> = ({ call, onClose }) => {
+const ScamVoiceDetails: React.FC<ScamVoiceDetailsProps> = ({ call, onClose }) => {
   const [locationName, setLocationName] = useState<string>('Loading...');
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const EmergencyDetails: React.FC<EmergencyDetailsProps> = ({ call, onClose }) =>
         </span>
         
         <div className="mt-3">
-          <img src={mapImageUrl} alt="Emergency Location" className="w-full h-32 object-cover rounded mb-3" />
+          <img src={mapImageUrl} alt="ScamVoice Location" className="w-full h-32 object-cover rounded mb-3" />
           
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div>
@@ -81,4 +81,4 @@ const EmergencyDetails: React.FC<EmergencyDetailsProps> = ({ call, onClose }) =>
   );
 };
 
-export default EmergencyDetails;
+export default ScamVoiceDetails;

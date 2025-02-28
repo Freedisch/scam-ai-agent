@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import * as allIcons from "tabler-icons-react";
 import { formatDistanceToNow } from 'date-fns';
-import EmergencyDetailsSidebar from '@/components/emergencyPopUp';
+import ScamVoiceDetailsSidebar from '@/components/ScamVoicePopUp';
 import { Input } from '@/components/ui/input';
 import { getThreatBadgeColor, getThreatLevel } from '@/app/lib/maputils';
 import { collection, getDocs } from 'firebase/firestore';
@@ -194,7 +194,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCallSelect }) => {
       </div>
 
       {selectedCall && (
-        <EmergencyDetailsSidebar
+        <ScamVoiceDetailsSidebar
           call={selectedCall}
           onClose={() => setSelectedCall(null)}
         />

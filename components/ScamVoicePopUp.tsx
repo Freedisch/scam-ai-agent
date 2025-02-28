@@ -1,4 +1,4 @@
-// components/EmergencyDetailsSidebar.tsx
+// components/VoiceDetailsSidebar.tsx
 'use client';
 
 import React from 'react';
@@ -20,12 +20,12 @@ interface Call {
   transcript: Transcript[];
 }
 
-interface EmergencyDetailsSidebarProps {
+interface ScamVoiceDetailsSidebarProps {
   call: Call;
   onClose: () => void;
 }
 
-const EmergencyDetailsSidebar: React.FC<EmergencyDetailsSidebarProps> = ({ call, onClose }) => {
+const ScamVoiceDetailsSidebar: React.FC<ScamVoiceDetailsSidebarProps> = ({ call, onClose }) => {
   return (
     <div className="fixed inset-y-0 right-0 w-96 bg-black text-white shadow-lg z-[1000] flex flex-col">
       <div className="flex justify-between items-center p-4 border-b border-gray-800">
@@ -90,4 +90,4 @@ const EmergencyDetailsSidebar: React.FC<EmergencyDetailsSidebarProps> = ({ call,
   );
 };
 
-export default EmergencyDetailsSidebar;
+export default ScamVoiceDetailsSidebar;
