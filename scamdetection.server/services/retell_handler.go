@@ -52,10 +52,11 @@ func Retellwhandler(c *gin.Context){
 
 	response := Response{
 		ResponseID: 0,
-		Content: "fastyCall, what's your emergency?",
+		Content: "Hello! Thibaut is currently unavailable but Can you tell me more about the reason for your call today?",
 		ContentComplete: true,
 		EndCall: false,
 	}
+
 	activeSessions[conn] = &CallSession{
         InitialResponseID: response.ResponseID,
         CurrentResponseID: response.ResponseID,
