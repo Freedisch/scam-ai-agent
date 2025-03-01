@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components/CallForwardingInstructions.tsx
 "use client";
 import { useState } from "react";
-import phone from '@/public/icons/phone.svg';
 import { Cog, TextCursor, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CallForwardingInstructionsProps {
@@ -22,13 +22,13 @@ export default function CallForwardingInstructions({ onBack, onComplete }: CallF
 
   // Mock icons data
   const iphoneIcons = {
-    settings: "../public/icons/settings.svg",
-    phone: phone,
-    switch: "./public/icons/switch.png"
+    settings: "/assets/icons/settings.svg",
+    phone: "/assets/icons/phone.svg",
+    switch: "/assets/icons/switch.png"
   };
   
   const androidIcons = {
-    simcard: "public/icons/simcard.svg"
+    simcard: "/assets/icons/simcard.png"
   };
 
   // Mock carrier data
