@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scamcall
 
-## Getting Started
+an AI-agent that safeguards your communication by proactively blocking scam calls, ensuring every interaction is secure and trustworthy. With advanced AI-driven detection, ScamCall protects you from fraudsters, protecting individuals and businesses from losses.
 
-First, run the development server:
+## Video Link
+https://youtu.be/8q46ddljIds 
 
-```bash
+## Project Link
+
+https://scam-ai-agent.vercel.app/
+
+## Technologies Used
+
+- Next.js 13 with App Router
+- React 18
+- TypeScript
+- Tailwind CSS for styling
+- Leaflet for map integration
+- date-fns for date formatting
+- tabler-icons-react for icons
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Node.js (v14 or later)
+- npm (v6 or later)
+
+## Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/freedisch/fastycall.git
+   cd fastycall
+   ```
+
+2. Install the dependencies:
+   ```
+   npm install
+   ```
+
+3. Create a `.env.local` file in the root directory and add any necessary environment variables.
+
+## Running the Application
+
+To start the development frontend server:
+
+```
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Running the Server
 
-## Learn More
+To run the server and AI model checkout the `scamdetection.server` folder [README file](https://github.com/Freedisch/scam-ai-agent/tree/main/scamdetection.server)
 
-To learn more about Next.js, take a look at the following resources:
+## Fine-Tunning Workflow Of the Large Language Model
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![finetuned-model](https://github.com/user-attachments/assets/968bc536-1589-4ddc-af90-23c80bdfdcf0)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- The Next.js team for their excellent framework
