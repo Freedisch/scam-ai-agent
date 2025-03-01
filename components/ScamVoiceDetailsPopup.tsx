@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Car, Flame, Ambulance } from 'tabler-icons-react';
+import { X } from 'tabler-icons-react';
 import { Call } from '@/components/sidebar';
 import { format } from 'date-fns';
 import { getLocationName, getStaticMapImage } from '@/app/lib/locationutils';
@@ -60,7 +60,7 @@ const ScamVoiceDetails: React.FC<ScamVoiceDetailsProps> = ({ call, onClose }) =>
         </div>
       </div>
       
-      <div className="p-3 border-t border-gray-200">
+      {/* <div className="p-3 border-t border-gray-200">
         <h3 className="text-gray-500 text-xs mb-2">Dispatch first responders:</h3>
         <div className="flex space-x-2">
           <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded flex items-center justify-center text-sm">
@@ -76,7 +76,7 @@ const ScamVoiceDetails: React.FC<ScamVoiceDetailsProps> = ({ call, onClose }) =>
             Medic
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
