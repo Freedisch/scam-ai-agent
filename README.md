@@ -31,7 +31,7 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
    ```
    git clone https://github.com/freedisch/scam-ai-agent.git
-   cd fastycall
+   cd scamcall-ai-agent
    ```
 
 2. Install the dependencies:
