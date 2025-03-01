@@ -170,7 +170,7 @@ export default function CallForwardingInstructions({ onBack, onComplete }: CallF
                   <div className="flex items-start">
                     <TextCursor size={25} className="text-amber-600" />
                     <span className="text-sm text-gray-600 ml-3">
-                      Type in the number you just purchased. <span className="font-medium text-gray-800">+250 555-123-4567</span>
+                      Type in the number you just purchased. <span className="font-medium text-gray-800">+1 (229) 629-6959</span>
                     </span>
                   </div>
                 </>
