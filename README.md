@@ -3,7 +3,7 @@
 an AI-agent that safeguards your communication by proactively blocking scam calls, ensuring every interaction is secure and trustworthy. With advanced AI-driven detection, ScamCall protects you from fraudsters, protecting individuals and businesses from losses.
 
 ## Video Link
-https://youtu.be/8q46ddljIds 
+
 
 ## Project Link
 
